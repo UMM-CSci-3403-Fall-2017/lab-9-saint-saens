@@ -16,4 +16,13 @@ public class DummyTest {
         fail("Not yet implemented");
     }
 
+    @Test
+    public void bitwiseTest(){
+        byte byt = 2;
+        byte bite = 104;
+        int shift = bite<<8;
+        int res = shift + byt;
+        assertEquals(26624, shift);
+        assertEquals(26626, res);
+    }
 }
