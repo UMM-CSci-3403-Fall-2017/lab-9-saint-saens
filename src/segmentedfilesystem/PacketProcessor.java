@@ -1,9 +1,8 @@
 package segmentedfilesystem;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class PacketProcessor {
     public Byte id;
@@ -83,27 +82,29 @@ public class PacketProcessor {
     }
 
     public void writeFile() throws IOException {
-        System.out.println("file name: " + fileName);
+        System.out.println("File name: " + fileName);
         File file = new File(fileName);
-        FileWriter writer = new FileWriter(file);
+//        FileWriter writer = new FileWriter(file);
+        DataOutputStream writer = new DataOutputStream(new FileOutputStream(file));
 
-        char[] toWrite;
+        byte[] toWrite;
         for(byte[] packet : dataPackets){
 
-            toWrite = new char[packet.length - 4];
-
-            for (int j = 4; j < packet.length; j++){
-                if (packet[j] == 0) {
-                    break;
-                }
-                writer.write(packet[j]);
-//                toWrite[j - 4] = (char) packet[j];
+            toWrite = new byte[packet.length - 4];
+            int j;
+            for (j = 4; j < packet.length; j++){
+//                if (packet[j] == 0 || packet[j] == 4) {
+//                    break;
+//                }
+//                writer.write(packet[j]);
+                toWrite[j-4] = packet[j];
 //                System.out.println("character: " + (char) packet[j] + " integer value: " + packet[j]);
             }
 
-            //writer.write(toWrite);
+            writer.write(toWrite, 0, toWrite.length);
         }
         writer.flush();
         writer.close();
     }
+    
 }
